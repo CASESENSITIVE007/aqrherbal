@@ -1,0 +1,29 @@
+[
+ {
+  "shape": "Counter-led shop",
+  "theme": "garden",
+  "axes": "light/roman-serif/chromatic-green",
+  "hero": "Counter",
+  "nav": "banner over a bar",
+  "footer": "colophon block",
+  "imagery": "user photographs 9, user sourcing map",
+  "photos": [],
+  "entry": "framer-motion reveals",
+  "fingerprint": "counter/table/pinned/statement/switcher/figures/band/rail",
+  "sections": [
+   "Counter",
+   "Table",
+   "Pinned",
+   "Statement",
+   "Switcher",
+   "Figures",
+   "Band",
+   "Rail"
+  ],
+  "signature": "blend picker that swaps the tin and cup",
+  "waived": [],
+  "prompt": "ARQ Herbals redesign with Framer Motion",
+  "date": "2026-11-11",
+  "mode": "build"
+ }
+]
