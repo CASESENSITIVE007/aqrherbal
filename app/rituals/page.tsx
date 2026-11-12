@@ -31,6 +31,8 @@ export default function Rituals() {
         img="/img/ritual.png"
         alt="A stoneware cup of tea on green linen, with the shadow of leaves on the wall"
         slot="ritual-hero"
+        variant="poster"
+        focus="40% 75%"
       />
 
       <section className="section" aria-labelledby="brew-h">

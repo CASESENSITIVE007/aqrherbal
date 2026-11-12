@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Vollkorn, Hanken_Grotesk, Newsreader } from "next/font/google";
+import { Cormorant_Garamond, Hanken_Grotesk, Newsreader } from "next/font/google";
 import "./globals.css";
 import MotionProvider from "./components/MotionProvider";
 import SiteNav from "./components/SiteNav";
@@ -7,7 +7,7 @@ import SiteFooter from "./components/SiteFooter";
 import Intro from "./components/Intro";
 import { ScrollProgress } from "./components/Reveal";
 
-const display = Vollkorn({ variable: "--ff-display", subsets: ["latin"], weight: ["600"], display: "swap" });
+const display = Cormorant_Garamond({ variable: "--ff-display", subsets: ["latin"], weight: ["500"], display: "swap" });
 const body = Hanken_Grotesk({ variable: "--ff-body", subsets: ["latin"], weight: ["400", "500"], display: "swap" });
 const outlier = Newsreader({ variable: "--ff-outlier", subsets: ["latin"], weight: ["400"], display: "swap" });
 

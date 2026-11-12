@@ -15,6 +15,7 @@ export default function PageHero({
   alt,
   slot,
   focus,
+  variant = "split",
   children,
 }: {
   title: string;
@@ -23,6 +24,8 @@ export default function PageHero({
   alt?: string;
   slot?: string;
   focus?: string;
+  /** "poster": the photograph fills the first screen and the text rests on a paper plate at its base. */
+  variant?: "split" | "poster";
   children?: React.ReactNode;
 }) {
   const reduce = useReducedMotion();
@@ -33,6 +36,45 @@ export default function PageHero({
     animate: ready ? { opacity: 1, y: 0 } : undefined,
     transition: { duration: reduce ? 0.2 : 0.7, ease: EASE, delay: reduce ? 0 : d },
   });
+
+  if (img && variant === "poster") {
+    return (
+      <section className="ledge ledge--page" aria-labelledby="page-title">
+        <motion.div
+          className="ledge__field"
+          data-slot={slot}
+          data-alt={alt}
+          data-reveal
+          initial={{ opacity: 0, scale: reduce ? 1 : 1.08 }}
+          animate={ready ? { opacity: 1, scale: 1 } : undefined}
+          transition={{ duration: 1.6, ease: EASE }}
+        >
+          <div className="ledge__img">
+            <Image src={img} alt={alt ?? ""} fill priority sizes="100vw" style={focus ? { objectPosition: focus } : undefined} />
+          </div>
+        </motion.div>
+        <div className="container ledge__in">
+          <motion.div
+            className="plate"
+            data-reveal
+            initial={{ opacity: 0, y: reduce ? 0 : 40 }}
+            animate={ready ? { opacity: 1, y: 0 } : undefined}
+            transition={{ duration: 1, ease: EASE, delay: 0.2 }}
+          >
+            <RiseText as="h1" id="page-title" text={title} mode="mount" delay={0.35} />
+            <motion.p className="lead" data-reveal {...enter(0.6)}>
+              {lead}
+            </motion.p>
+            {children && (
+              <motion.div className="actions" data-reveal {...enter(0.75)}>
+                {children}
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={`page-hero${img ? "" : " page-hero--corridor"}`} aria-labelledby="page-title">

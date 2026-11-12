@@ -33,7 +33,7 @@
   --color-band-ink: oklch(94% 0.025 90);
   --color-band-muted: oklch(80% 0.03 120);
   --color-scrim: oklch(18% 0.03 155 / 0.55);
-  --font-display: var(--ff-display), "Vollkorn", ui-serif, Georgia, serif;
+  --font-display: var(--ff-display), "Cormorant Garamond", ui-serif, Georgia, serif;
   --font-body: var(--ff-body), "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-outlier: var(--ff-outlier), "Newsreader", ui-serif, Georgia, serif;
   --radius-card: 4px;

@@ -1,6 +1,7 @@
 "use client";
 
-import { RiseText, Stagger, Item, Reveal } from "./Reveal";
+import Image from "next/image";
+import { RiseText, Stagger, Item, Reveal, ImageReveal } from "./Reveal";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { animate, useInView, useReducedMotion } from "framer-motion";
@@ -23,44 +24,44 @@ function Count({ to }: { to: number }) {
   return <span ref={ref}>{to}</span>;
 }
 
-/** Figures in old-style numerals: the hot brew, straight from ARQ's ritual card. */
+/** The ritual card: the dark ritual photograph beside the brew, set as ruled rows on green ink. */
 export default function BrewFigures() {
   return (
-    <section className="brew section" aria-labelledby="brew-title">
-      <div className="container">
-        <div className="brew__head">
-          <RiseText id="brew-title" text="A slow, simple brew." />
-          <p className="lead">
-            One bag, fresh water, a few quiet minutes. <Link href="/rituals" className="link">See every ritual</Link>
-          </p>
-        </div>
-        <Stagger as="ol" className="brew__figs">
-          <Item>
-            <p className="figure">
-              <Count to={240} />
-              <small>ml</small>
-            </p>
-            <p>Water for every bag</p>
+    <section className="ritual band--ink" aria-labelledby="brew-title">
+      <ImageReveal className="ritual__photo" slot="ritual" alt="A cup of tea on green linen in leaf shadow">
+        <Image src="/img/ritual.png" alt="" fill sizes="(min-width: 60rem) 45vw, 100vw" />
+      </ImageReveal>
+      <div className="ritual__card">
+        <RiseText id="brew-title" text="A slow, simple brew." />
+        <Reveal as="p" className="lead" delay={0.15}>
+          One bag, fresh water, a few quiet minutes.
+        </Reveal>
+        <Stagger as="dl" className="ritual__rows">
+          <Item as="div">
+            <dt>Water</dt>
+            <dd>
+              <span className="ritual__n num"><Count to={240} /> ml</span> for every bag
+            </dd>
           </Item>
-          <Item>
-            <p className="figure">
-              <Count to={95} />
-              <small>°C</small>
-            </p>
-            <p>Just off the boil</p>
+          <Item as="div">
+            <dt>Heat</dt>
+            <dd>
+              <span className="ritual__n num"><Count to={95} />°C</span> just off the boil
+            </dd>
           </Item>
-          <Item>
-            <p className="figure">
-              <Count to={3} />
-              <span className="figure__to">to</span>
-              <Count to={5} />
-              <small>min</small>
-            </p>
-            <p>Steep, then sip</p>
+          <Item as="div">
+            <dt>Steep</dt>
+            <dd>
+              <span className="ritual__n num"><Count to={3} /> to <Count to={5} /> min</span> then sip
+            </dd>
+          </Item>
+          <Item as="div">
+            <dt>Iced</dt>
+            <dd>Use two bags, steep, cool and pour over ice. Squeeze in lemon and Blue Tea turns purple.</dd>
           </Item>
         </Stagger>
-        <Reveal as="p" className="brew__iced">
-          Iced, use two bags, steep, cool and pour over ice. Squeeze in lemon and Blue Tea turns purple.
+        <Reveal delay={0.2}>
+          <Link href="/rituals" className="link link--light">See every ritual</Link>
         </Reveal>
       </div>
     </section>

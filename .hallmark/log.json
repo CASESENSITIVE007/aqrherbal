@@ -1,5 +1,34 @@
 [
  {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "site",
+  "shape": "Photographic",
+  "theme": "garden",
+  "axes": "light/roman-serif/chromatic-green",
+  "hero": "Ledge",
+  "nav": "masthead",
+  "footer": "statement",
+  "imagery": "user photographs 11, user sourcing map",
+  "photos": [],
+  "entry": "framer-motion reveals",
+  "fingerprint": "ledge/table/pinned/statement/switcher/ritual-card/band/rail",
+  "sections": [
+   "Ledge",
+   "Table",
+   "Pinned",
+   "Statement",
+   "Switcher",
+   "Ritual card",
+   "Band",
+   "Rail"
+  ],
+  "signature": "offer on a paper plate over the sunlit range",
+  "waived": [],
+  "prompt": "ARQ Herbals redesign keeping the colour theme",
+  "date": "2026-11-12"
+ },
+ {
   "shape": "Counter-led shop",
   "theme": "garden",
   "axes": "light/roman-serif/chromatic-green",

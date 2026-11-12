@@ -3,7 +3,7 @@
 import { RiseText, Reveal } from "./Reveal";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 // States and herbs exactly as ARQ's own sourcing map labels them; origin = where the pin sits on that map.
 const regions = [
@@ -14,29 +14,58 @@ const regions = [
   { state: "Kerala", herbs: "Tulsi and pepper", x: 32, y: 82 },
 ];
 
-/** Pinned: the map holds still while each state scrolls past, and the map leans in on that state. */
+const WIDE = "(min-width: 60rem)";
+
+/**
+ * Wide screens: the map holds still while each state scrolls past, and leans in on that state.
+ * Phones: the map shows all of India; tapping a state's button zooms to it, tapping again zooms back out.
+ */
 export default function OriginMap() {
   const [active, setActive] = useState(-1);
   const refs = useRef<(HTMLLIElement | null)[]>([]);
 
   useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i));
-        });
-      },
-      { rootMargin: "-45% 0px -45% 0px" },
-    );
-    refs.current.forEach((el) => el && io.observe(el));
-    return () => io.disconnect();
+    const mq = window.matchMedia(WIDE);
+    let io: IntersectionObserver | null = null;
+    const start = () => {
+      io?.disconnect();
+      io = null;
+      if (!mq.matches) return; // phones are driven by taps, not by scrolling
+      io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i));
+          });
+        },
+        { rootMargin: "-45% 0px -45% 0px" },
+      );
+      refs.current.forEach((el) => el && io!.observe(el));
+    };
+    const onChange = () => {
+      setActive(-1); // every layout change starts from the whole country
+      start();
+    };
+    start();
+    mq.addEventListener("change", onChange);
+    return () => {
+      io?.disconnect();
+      mq.removeEventListener("change", onChange);
+    };
   }, []);
 
   const r = regions[active];
+  const tap = (i: number) => setActive((cur) => (cur === i ? -1 : i));
 
   return (
     <section className="origin section" aria-labelledby="origin-title">
       <div className="container origin__grid">
+        <div className="origin__head">
+          <RiseText id="origin-title" text="Every herb has a home state." />
+          <Reveal as="p" className="lead" delay={0.2}>
+            We trace each leaf and flower to the state it grows in.
+          </Reveal>
+        </div>
+
         <div className="origin__map">
           <div className="origin__frame" data-kind="product">
             <motion.div
@@ -52,27 +81,60 @@ export default function OriginMap() {
               />
             </motion.div>
           </div>
+
+          {/* phones only: tap a state to zoom the map to it */}
+          <div className="origin__tap">
+            <div className="origin__chips" role="group" aria-label="Zoom the map to a state">
+              {regions.map((reg, i) => (
+                <button
+                  key={reg.state}
+                  type="button"
+                  className="origin__chip"
+                  aria-pressed={i === active}
+                  onClick={() => tap(i)}
+                >
+                  {i === active && (
+                    <motion.span
+                      layoutId="origin-chip"
+                      className="origin__chipfill"
+                      aria-hidden="true"
+                      transition={{ type: "spring", stiffness: 420, damping: 38 }}
+                    />
+                  )}
+                  {reg.state}
+                </button>
+              ))}
+            </div>
+            <p className="origin__note" aria-live="polite">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={active}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4, transition: { duration: 0.12 } }}
+                >
+                  {r ? `${r.state}: ${r.herbs.toLowerCase()}.` : "Tap a state to see what grows there."}
+                </motion.span>
+              </AnimatePresence>
+            </p>
+          </div>
         </div>
 
-        <div className="origin__text">
-          <RiseText id="origin-title" text="Every herb has a home state." />
-          <Reveal as="p" className="lead" delay={0.2}>We trace each leaf and flower to the state it grows in.</Reveal>
-          <ol className="origin__list">
-            {regions.map((reg, i) => (
-              <li
-                key={reg.state}
-                data-i={i}
-                ref={(el) => {
-                  refs.current[i] = el;
-                }}
-                className={i === active ? "is-active" : undefined}
-              >
-                <h3>{reg.state}</h3>
-                <p>{reg.herbs}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
+        <ol className="origin__list">
+          {regions.map((reg, i) => (
+            <li
+              key={reg.state}
+              data-i={i}
+              ref={(el) => {
+                refs.current[i] = el;
+              }}
+              className={i === active ? "is-active" : undefined}
+            >
+              <h3>{reg.state}</h3>
+              <p>{reg.herbs}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

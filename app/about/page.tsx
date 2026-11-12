@@ -26,6 +26,8 @@ export default function About() {
         img="/img/about1.png"
         alt="A glass of green herbal tea with fresh leaves on a stone ledge in dappled sun"
         slot="about-hero"
+        variant="poster"
+        focus="50% 55%"
       />
 
       <section className="section" aria-labelledby="began-title">

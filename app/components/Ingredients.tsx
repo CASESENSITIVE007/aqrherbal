@@ -1,6 +1,7 @@
 "use client";
 
 import { RiseText } from "./Reveal";
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { blends } from "../data";
@@ -88,6 +89,7 @@ export default function Ingredients() {
               exit={{ opacity: 0, x: -16, transition: { duration: 0.2 } }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
+              <div className="herbs__copy">
               <p className="herbs__name" aria-hidden="true">
                 {/* the name sets itself letter by letter */}
                 {h.name.split("").map((ch, i) => (
@@ -119,6 +121,15 @@ export default function Ingredients() {
               <a className="link" href={h.blend.href}>
                 Shop {h.blend.name}
               </a>
+              </div>
+              <motion.div
+                className="herbs__photo"
+                initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
+                animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+              >
+                <Image src={h.blend.img} alt={h.blend.alt} fill sizes="(min-width: 60rem) 24vw, 80vw" />
+              </motion.div>
             </motion.div>
           </AnimatePresence>
         </div>
